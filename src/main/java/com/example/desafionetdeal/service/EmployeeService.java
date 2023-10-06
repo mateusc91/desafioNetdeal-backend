@@ -6,8 +6,8 @@ import com.example.desafionetdeal.exception.EmployeeNotFoundException;
 import com.example.desafionetdeal.helper.EPasswordComplexity;
 import com.example.desafionetdeal.helper.PasswordStrengthMeter;
 import com.example.desafionetdeal.repository.EmployeeRepository;
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +29,7 @@ public class EmployeeService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    @Transactional
     public Employee saveEmployee(EmployeeDTO employeeDto) {
         int score = PasswordStrengthMeter.calculatePasswordScore(employeeDto.getPassword());
         employeeDto.setPasswordComplexity(calculatePasswordComplexity(score));
