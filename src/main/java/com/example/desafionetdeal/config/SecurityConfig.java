@@ -17,7 +17,6 @@ import static org.springframework.security.web.util.matcher.AntPathRequestMatche
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-
     @Bean
     public PasswordEncoder encoder() {
         return new BCryptPasswordEncoder();
