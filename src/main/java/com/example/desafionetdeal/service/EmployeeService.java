@@ -16,21 +16,24 @@ import java.util.List;
 
 @Service
 public class EmployeeService {
-    @Autowired
+
     private EmployeeRepository employeeRepository;
 
-    @Autowired
-    ModelMapper modelMapper;
+    private ModelMapper modelMapper;
 
-    @Autowired
     private PasswordEncoder passwordEncoder;
+
+    public EmployeeService(EmployeeRepository employeeRepository, ModelMapper modelMapper, PasswordEncoder passwordEncoder) {
+        this.employeeRepository = employeeRepository;
+        this.modelMapper = modelMapper;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     public Employee saveEmployee(EmployeeDTO employeeDto) {
         int score = PasswordStrengthMeter.calculatePasswordScore(employeeDto.getPassword());
         employeeDto.setPasswordComplexity(calculatePasswordComplexity(score));
         employeeDto.setPasswordScore(score);
         employeeDto.setPassword(passwordEncoder.encode(employeeDto.getPassword()));
-        employeeDto.setCreatedAt(LocalDateTime.now());
         return employeeRepository.save(convertFromDto(employeeDto));
     }
 

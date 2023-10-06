@@ -9,17 +9,23 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/employees")
 public class EmployeeController {
-    @Autowired
+
     private EmployeeService employeeService;
+
+    public EmployeeController(EmployeeService employeeService) {
+        this.employeeService = employeeService;
+    }
 
     @PostMapping("/save-employee")
     public ResponseEntity<Employee> createEmployee(@Valid @RequestBody EmployeeDTO employee) {
+        employee.setCreatedAt(LocalDateTime.now());
         return new ResponseEntity<>(employeeService.saveEmployee(employee), HttpStatus.CREATED);
 
     }
